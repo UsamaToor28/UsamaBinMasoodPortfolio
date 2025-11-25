@@ -14,6 +14,7 @@ import {
   Component, 
   Brain 
 } from "lucide-react";
+import profileImage from '@/assets/Profile.png';
 
 const About = () => {
   return (
@@ -68,7 +69,7 @@ const About = () => {
                 
                 <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-gray-100 shadow-2xl transform hover:scale-[1.02] transition-transform duration-500">
                   <img 
-                    src="./src/assets/Profile.png" 
+                    src={profileImage} 
                     alt="Usama - Designer" 
                     className="w-full h-full object-cover object-bottom"
                   />
