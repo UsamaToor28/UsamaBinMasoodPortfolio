@@ -94,7 +94,6 @@ const Projects = () => {
 
   const projects = showAll ? allProjects : allProjects.slice(0, 4);
   const categories = ["All", ...new Set(allProjects.map((p) => p.category))];
-
   const filteredProjects =
     filter === "All"
       ? projects
@@ -139,13 +138,13 @@ const Projects = () => {
 
         {/* Filter Tabs with View Toggle */}
         <div className="flex justify-between items-center mb-10 flex-wrap gap-4">
-          <div className="flex items-center gap-3 flex-wrap">
-            <Filter className="h-5 w-5 text-teal-500" />
+          <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+            <Filter className="h-4 w-4 md:h-5 md:w-5 text-teal-500" />
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setFilter(category)}
-                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
+                className={`px-3 py-1.5 md:px-6 md:py-2 rounded-full text-sm md:text-base font-medium transition-all duration-300 ${
                   filter === category
                     ? "bg-teal-500 text-white shadow-lg scale-105"
                     : "bg-white text-gray-600 hover:bg-teal-50 hover:text-teal-600 border border-gray-200"
@@ -157,12 +156,12 @@ const Projects = () => {
           </div>
           
           {/* View Mode Toggle */}
-          <div className="flex gap-2 bg-white p-1 rounded-full shadow-md">
+          <div className="flex gap-1 md:gap-2 bg-white p-0.5 md:p-1 rounded-full shadow-md">
             {["grid", "showcase"].map((mode) => (
               <button
                 key={mode}
                 onClick={() => setViewMode(mode)}
-                className={`relative px-4 py-2 rounded-full text-sm font-medium transition-colors delay-100 ${
+                className={`relative px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium transition-colors delay-100 ${
                   viewMode === mode ? "text-white" : "text-gray-600 hover:text-teal-600"
                 }`}
               >
@@ -191,7 +190,7 @@ const Projects = () => {
                 key={index}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className="group hover:shadow-large transition-all duration-500 hover:-translate-y-2 border: 1px solid #b2eff3ff hover:border-[rgba(14,165,233,0.4)] overflow-hidden animate-fade-in bg-white relative"
+                className="group hover:shadow-large transition-all duration-500 hover:-translate-y-2 border-[1px] border-[#b2eff3ff] hover:border-[rgba(14,165,233,0.4)] overflow-hidden animate-fade-in bg-white relative"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="relative">
@@ -205,21 +204,19 @@ const Projects = () => {
                         <img
                           src={project.images[0]}
                           alt={project.title}
-                          className="w-full h-full object-cover absolute inset-0 transform scale-100 group-hover:scale-110 transition-transform duration-700 ease-out"
+                          className={`w-full h-full ${project.isFullPage ? 'object-cover object-top' : 'object-cover'} absolute inset-0 transform scale-100 group-hover:scale-110 transition-transform duration-700 ease-out`}
                           onClick={(e) => e.stopPropagation()}
                         />
                         {/* Image Overlay Gradient */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                       </>
                     )}
-
                     {/* Category Badge */}
                     <div className="absolute top-4 left-4 z-20">
                       <span className="px-3 py-1 text-xs font-semibold bg-white/90 text-teal-600 rounded-full backdrop-blur-sm shadow-md">
                         {project.category}
                       </span>
                     </div>
-
                     {/* Zoom Icon - Top Right */}
                     <button
                       onClick={() => setLightbox({ projectIndex: index, imageIndex: 0 })}
@@ -227,11 +224,9 @@ const Projects = () => {
                     >
                       <ZoomIn className="h-5 w-5" />
                     </button>
-
                     {/* Progress indicator */}
                     <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-600 to-teal-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                   </div>
-
                   <CardContent className="p-6">
                     {/* Title with arrow */}
                     <div className="flex items-center justify-between mb-3">
@@ -242,11 +237,9 @@ const Projects = () => {
                         <span className="text-xs text-gray-400 font-medium">{project.year}</span>
                       </div>
                     </div>
-
                     <p className="text-muted-foreground mb-4 leading-relaxed text-sm">
                       {project.description}
                     </p>
-
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2">
                       {project.tags.map((tag, tagIndex) => (
@@ -266,104 +259,94 @@ const Projects = () => {
         ) : (
           // Showcase View - Large Featured Cards
           <div className="space-y-12">
-  {filteredProjects.map((project, index) => (
-    <Card
-      key={index}
-      onMouseEnter={() => setHoveredIndex(index)}
-      onMouseLeave={() => setHoveredIndex(null)}
-      className="group hover:shadow-2xl transition-all duration-500 border-0 overflow-hidden animate-fade-in bg-white"
-      style={{ animationDelay: `${index * 0.1}s` }}
-    >
-      <div
-        className={`flex flex-col md:flex-row ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''} items-stretch`}
-      >
-        {/* Image Section - 60% width */}
-        <div className="md:w-3/5 relative flex-shrink-0">
-          <div
-            className={`w-full relative overflow-hidden cursor-pointer ${project.color}`}
-            onClick={() => setLightbox({ projectIndex: index, imageIndex: 0 })}
-            style={{ aspectRatio: '16/9' }}
-          >
-            {project.images && project.images.length > 0 && (
-              <>
-                <img
-                  src={project.images[0]}
-                  alt={project.title}
-                  className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-1000 ease-out"
-                  onClick={(e) => e.stopPropagation()}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              </>
-            )}
-
-            {/* Zoom Icon - Top Right */}
-            <button
-              onClick={() => setLightbox({ projectIndex: index, imageIndex: 0 })}
-              className="absolute top-6 right-6 z-30 bg-white/90 hover:bg-teal-500 text-teal-600 hover:text-white p-3 rounded-full backdrop-blur-sm shadow-lg transition-all duration-300 transform hover:scale-110"
-            >
-              <ZoomIn className="h-6 w-6" />
-            </button>
-
-            {/* Progress Bar */}
-            <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-teal-600 via-teal-400 to-teal-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left"></div>
-          </div>
-        </div>
-
-        {/* Content Section - 40% width */}
-        <div className="md:w-2/5 p-8 md:p-10 flex flex-col">
-          <div>
-            <div className="mb-4">
-              <span className="px-3 py-1 text-xs font-semibold bg-teal-100 text-teal-600 rounded-full">
-                {project.category}
-              </span>
-            </div>
-
-            <h3 className="text-3xl md:text-4xl font-black text-teal-500 mb-4 group-hover:text-gray-700 transition-colors line-clamp-2">
-              {project.title}
-            </h3>
-
-            <p className="text-muted-foreground mb-6 leading-relaxed text-base">
-              {project.description}
-            </p>
-
-            {/* Year */}
-            <div className="mb-6">
-              <span className="text-teal-500 font-semibold text-lg">{project.year}</span>
-            </div>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {project.tags.map((tag, tagIndex) => (
-                <span
-                  key={tagIndex}
-                  className="px-4 py-2 text-xs font-medium bg-teal-50 text-teal-600 rounded-full hover:bg-teal-500 hover:text-white transition-all duration-300 cursor-default"
+            {filteredProjects.map((project, index) => (
+              <Card
+                key={index}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className="group hover:shadow-2xl transition-all duration-500 border-0 overflow-hidden animate-fade-in bg-white"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div
+                  className={`flex flex-col md:flex-row ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''} items-stretch`}
                 >
-                  {tag}
-                </span>
-              ))}
-            </div>
+                  {/* Image Section - 60% width */}
+                  <div className="md:w-3/5 relative flex-shrink-0">
+                    <div
+                      className={`w-full relative overflow-hidden cursor-pointer ${project.color}`}
+                      onClick={() => setLightbox({ projectIndex: index, imageIndex: 0 })}
+                      style={{ aspectRatio: '16/9' }}
+                    >
+                      {project.images && project.images.length > 0 && (
+                        <>
+                          <img
+                            src={project.images[0]}
+                            alt={project.title}
+                            className={`w-full h-full ${project.isFullPage ? 'object-cover object-top' : 'object-cover'} transform scale-100 group-hover:scale-105 transition-transform duration-1000 ease-out`}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        </>
+                      )}
+                      {/* Zoom Icon - Top Right */}
+                      <button
+                        onClick={() => setLightbox({ projectIndex: index, imageIndex: 0 })}
+                        className="absolute top-6 right-6 z-30 bg-white/90 hover:bg-teal-500 text-teal-600 hover:text-white p-3 rounded-full backdrop-blur-sm shadow-lg transition-all duration-300 transform hover:scale-110"
+                      >
+                        <ZoomIn className="h-6 w-6" />
+                      </button>
+                      {/* Progress Bar */}
+                      <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-teal-600 via-teal-400 to-teal-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left"></div>
+                    </div>
+                  </div>
+                  {/* Content Section - 40% width */}
+                  <div className="md:w-2/5 p-8 md:p-10 flex flex-col">
+                    <div>
+                      <div className="mb-4">
+                        <span className="px-3 py-1 text-xs font-semibold bg-teal-100 text-teal-600 rounded-full">
+                          {project.category}
+                        </span>
+                      </div>
+                      <h3 className="text-3xl md:text-4xl font-black text-teal-500 mb-4 group-hover:text-gray-700 transition-colors line-clamp-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-muted-foreground mb-6 leading-relaxed text-base">
+                        {project.description}
+                      </p>
+                      {/* Year */}
+                      <div className="mb-6">
+                        <span className="text-teal-500 font-semibold text-lg">{project.year}</span>
+                      </div>
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {project.tags.map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="px-4 py-2 text-xs font-medium bg-teal-50 text-teal-600 rounded-full hover:bg-teal-500 hover:text-white transition-all duration-300 cursor-default"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    {/* CTA Button */}
+                    <div className="mt-auto">
+                      <button
+                        onClick={() => setLightbox({ projectIndex: index, imageIndex: 0 })}
+                        className="inline-flex items-center gap-2 text-teal-500 hover:text-teal-600 font-semibold group/link"
+                      >
+                        Explore Project
+                        <ArrowRight className="h-5 w-5 transform group-hover/link:translate-x-2 transition-transform duration-300" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            ))}
           </div>
-
-          {/* CTA Button */}
-          <div className="mt-auto">
-            <button
-              onClick={() => setLightbox({ projectIndex: index, imageIndex: 0 })}
-              className="inline-flex items-center gap-2 text-teal-500 hover:text-teal-600 font-semibold group/link"
-            >
-              Explore Project
-              <ArrowRight className="h-5 w-5 transform group-hover/link:translate-x-2 transition-transform duration-300" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </Card>
-  ))}
-</div>
-
         )}
 
         {/* View All / Show Less Button */}
-        {/* // Update the View All / Show Less Button section */}
         <div className="text-center mt-16">
           <Button
             onClick={() => {
@@ -415,113 +398,109 @@ const Projects = () => {
 
       {/* Lightbox Modal */}
       {lightbox.projectIndex !== null && (
-  <div
-    className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-8 animate-fade-in"
-    onClick={() => setLightbox({ projectIndex: null, imageIndex: 0 })}
-  >
-    {/* Close Button */}
-    <button
-      onClick={() => setLightbox({ projectIndex: null, imageIndex: 0 })}
-      className="absolute top-6 right-6 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white p-2.5 rounded-full backdrop-blur-md transition-all duration-300 border border-white/10"
-      aria-label="Close"
-    >
-      <X className="h-5 w-5" />
-    </button>
-
-    {/* Previous Button - Only show if multiple images */}
-    {filteredProjects[lightbox.projectIndex].images.length > 1 && (
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          const proj = filteredProjects[lightbox.projectIndex];
-          setLightbox({
-            ...lightbox,
-            imageIndex: (lightbox.imageIndex - 1 + proj.images.length) % proj.images.length,
-          });
-        }}
-        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white p-3 rounded-full backdrop-blur-md transition-all duration-300 border border-white/10"
-        aria-label="Previous image"
-      >
-        <span className="text-2xl">‹</span>
-      </button>
-    )}
-
-    {/* Image Container */}
-    <div 
-      className={`relative ${
-        filteredProjects[lightbox.projectIndex].isFullPage 
-          ? 'w-[85vw] h-[85vh] overflow-auto' 
-          : 'max-w-[70vw] max-h-[70vh] flex items-center justify-center'
-      }`}
-      style={filteredProjects[lightbox.projectIndex].isFullPage ? {
-        scrollbarWidth: 'thin',
-        scrollbarColor: 'rgba(255, 255, 255, 0.3) transparent'
-      } : {}}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <style>{`
-        div::-webkit-scrollbar {
-          width: 8px;
-          height: 8px;
-        }
-        div::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        div::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.2);
-          border-radius: 10px;
-          transition: background 0.3s;
-        }
-        div::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.3);
-        }
-      `}</style>
-      <img
-        src={filteredProjects[lightbox.projectIndex].images[lightbox.imageIndex]}
-        alt={`${filteredProjects[lightbox.projectIndex].title} - Image ${lightbox.imageIndex + 1}`}
-        className={`rounded-lg shadow-2xl ${
-          filteredProjects[lightbox.projectIndex].isFullPage 
-            ? 'w-auto h-auto min-w-full block' 
-            : 'max-w-full max-h-full object-contain'
-        }`}
-      />
-    </div>
-
-    {/* Next Button - Only show if multiple images */}
-    {filteredProjects[lightbox.projectIndex].images.length > 1 && (
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          const proj = filteredProjects[lightbox.projectIndex];
-          setLightbox({
-            ...lightbox,
-            imageIndex: (lightbox.imageIndex + 1) % proj.images.length,
-          });
-        }}
-        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white p-3 rounded-full backdrop-blur-md transition-all duration-300 border border-white/10"
-        aria-label="Next image"
-      >
-        <span className="text-2xl">›</span>
-      </button>
-    )}
-
-    {/* Image Counter - Only show if multiple images */}
-    {filteredProjects[lightbox.projectIndex].images.length > 1 && (
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-        {filteredProjects[lightbox.projectIndex].images.map((_, idx) => (
-          <div
-            key={idx}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              idx === lightbox.imageIndex 
-                ? 'w-8 bg-white' 
-                : 'w-1.5 bg-white/40 hover:bg-white/60'
+        <div
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-8 animate-fade-in"
+          onClick={() => setLightbox({ projectIndex: null, imageIndex: 0 })}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setLightbox({ projectIndex: null, imageIndex: 0 })}
+            className="absolute top-6 right-6 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white p-2.5 rounded-full backdrop-blur-md transition-all duration-300 border border-white/10"
+            aria-label="Close"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          {/* Previous Button - Only show if multiple images */}
+          {filteredProjects[lightbox.projectIndex].images.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                const proj = filteredProjects[lightbox.projectIndex];
+                setLightbox({
+                  ...lightbox,
+                  imageIndex: (lightbox.imageIndex - 1 + proj.images.length) % proj.images.length,
+                });
+              }}
+              className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white p-3 rounded-full backdrop-blur-md transition-all duration-300 border border-white/10"
+              aria-label="Previous image"
+            >
+              <span className="text-2xl">‹</span>
+            </button>
+          )}
+          {/* Image Container */}
+          <div 
+            className={`relative ${
+              filteredProjects[lightbox.projectIndex].isFullPage 
+                ? 'w-[85vw] h-[85vh] overflow-auto' 
+                : 'max-w-[70vw] max-h-[70vh] flex items-center justify-center'
             }`}
-          />
-        ))}
-      </div>
-    )}
-  </div>
-)}
+            style={filteredProjects[lightbox.projectIndex].isFullPage ? {
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'rgba(255, 255, 255, 0.3) transparent'
+            } : {}}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <style>{`
+              div::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+              }
+              div::-webkit-scrollbar-track {
+                background: transparent;
+              }
+              div::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 10px;
+                transition: background 0.3s;
+              }
+              div::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.3);
+              }
+            `}</style>
+            <img
+              src={filteredProjects[lightbox.projectIndex].images[lightbox.imageIndex]}
+              alt={`${filteredProjects[lightbox.projectIndex].title} - Image ${lightbox.imageIndex + 1}`}
+              className={`rounded-lg shadow-2xl ${
+                filteredProjects[lightbox.projectIndex].isFullPage 
+                  ? 'w-auto h-auto min-w-full block' 
+                  : 'max-w-full max-h-full object-contain'
+              }`}
+            />
+          </div>
+          {/* Next Button - Only show if multiple images */}
+          {filteredProjects[lightbox.projectIndex].images.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                const proj = filteredProjects[lightbox.projectIndex];
+                setLightbox({
+                  ...lightbox,
+                  imageIndex: (lightbox.imageIndex + 1) % proj.images.length,
+                });
+              }}
+              className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white p-3 rounded-full backdrop-blur-md transition-all duration-300 border border-white/10"
+              aria-label="Next image"
+            >
+              <span className="text-2xl">›</span>
+            </button>
+          )}
+          {/* Image Counter - Only show if multiple images */}
+          {filteredProjects[lightbox.projectIndex].images.length > 1 && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+              {filteredProjects[lightbox.projectIndex].images.map((_, idx) => (
+                <div
+                  key={idx}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    idx === lightbox.imageIndex 
+                      ? 'w-8 bg-white' 
+                      : 'w-1.5 bg-white/40 hover:bg-white/60'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 };

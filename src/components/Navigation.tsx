@@ -174,32 +174,32 @@ const Navigation = () => {
         className="fixed top-0 w-full z-50 pointer-events-none"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20 ">
+          <div className="flex justify-between md:justify-between items-center h-20">
             
             <AnimatePresence>
               {showMainNavBar && (
                 <>
-                  {/* Logo */}
+                  {/* Logo - Hidden on mobile */}
                   <motion.button
                     variants={navContentVariants}
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
                     onClick={() => scrollToSection("#home")}
-                    className="flex-shrink-0 pointer-events-auto"
+                    className="flex-shrink-0 pointer-events-auto hidden md:block"
                   >
                     <span className="text-3xl font-black bg-gradient-to-r from-teal-500 to-cyan-400 bg-clip-text text-transparent">
                       UT
                     </span>
                   </motion.button>
 
-                  {/* Desktop Navigation (No more layoutId) */}
+                  {/* Desktop & Mobile Navigation - Centered on mobile */}
                   <motion.ul
                     variants={navContentVariants}
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
-                    className="flex items-center space-x-2 bg-gray-900 p-1.5 rounded-full border border-gray-700 pointer-events-auto"
+                    className="flex items-center space-x-2 bg-gray-900 p-1.5 rounded-full border border-gray-700 pointer-events-auto md:mx-0 mx-auto"
                     onMouseLeave={() => setHoveredSection(null)}
                   >
                     {navItems.map((item) => {
